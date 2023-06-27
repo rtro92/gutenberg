@@ -12,7 +12,6 @@ import {
 	getBlockVariations,
 	hasBlockSupport,
 	getPossibleBlockTransformations,
-	parse,
 	switchToBlockType,
 	store as blocksStore,
 } from '@wordpress/blocks';
@@ -2309,29 +2308,17 @@ function getUnsyncedPatterns( state ) {
 		} );
 }
 
-export const __experimentalGetParsedPattern = createSelector(
-	( state, patternName ) => {
-		const patterns = state.settings.__experimentalBlockPatterns;
-		const unsyncedPatterns = getUnsyncedPatterns( state );
-
-		const pattern = [ ...patterns, ...unsyncedPatterns ].find(
-			( { name } ) => name === patternName
-		);
-		if ( ! pattern ) {
-			return null;
-		}
-		return {
-			...pattern,
-			blocks: parse( pattern.content, {
-				__unstableSkipMigrationLogs: true,
-			} ),
-		};
-	},
-	( state ) => [
-		state.settings.__experimentalBlockPatterns,
-		state.settings.__experimentalReusableBlocks,
-	]
-);
+export const __experimentalGetParsedPattern = ( state, patternName ) => {
+	const patterns = state.settings.__experimentalBlockPatterns;
+	const unsyncedPatterns = getUnsyncedPatterns( state );
+	const pattern = [ ...patterns, ...unsyncedPatterns ].find(
+		( { name } ) => name === patternName
+	);
+	if ( ! pattern ) {
+		return null;
+	}
+	return state.parsedPatterns.get( pattern ) ?? null;
+};
 
 const getAllAllowedPatterns = createSelector(
 	( state ) => {
@@ -2341,10 +2328,11 @@ const getAllAllowedPatterns = createSelector(
 		const { allowedBlockTypes } = getSettings( state );
 
 		const parsedPatterns = [ ...patterns, ...unsyncedPatterns ]
-			.filter( ( { inserter = true } ) => !! inserter )
+			.filter( ( { inserter = true } ) => inserter )
 			.map( ( { name } ) =>
 				__experimentalGetParsedPattern( state, name )
-			);
+			)
+			.filter( Boolean );
 		const allowedPatterns = parsedPatterns.filter( ( { blocks } ) =>
 			checkAllowListRecursive( blocks, allowedBlockTypes )
 		);
