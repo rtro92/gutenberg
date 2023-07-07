@@ -71,6 +71,7 @@
 		"__experimentalSelector": "ol,ul",
 		"__experimentalSlashInserter": true
 	},
-	"editorStyle": "wp-block-list-editor",
-	"style": "wp-block-list"
+	"editorScript": "file:./editor.min.js",
+	"editorStyle": "file:./editor.css",
+	"style": "file:./style.css"
 }
