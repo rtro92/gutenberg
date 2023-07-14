@@ -203,6 +203,7 @@ class WP_Theme_JSON_Gutenberg {
 	 *              removed the `--wp--style--block-gap` property.
 	 * @since 6.2.0 Added `outline-*`, and `min-height` properties.
 	 * @since 6.3.0 Added `writing-mode` property.
+	 * @since 6.4.0 Added `text-orientation` property.
 	 *
 	 * @var array
 	 */
@@ -262,6 +263,7 @@ class WP_Theme_JSON_Gutenberg {
 		'filter'                            => array( 'filter', 'duotone' ),
 		'box-shadow'                        => array( 'shadow' ),
 		'writing-mode'                      => array( 'typography', 'writingMode' ),
+		'text-orientation'                  => array( 'typography', 'textOrientation' ),
 	);
 
 	/**
@@ -342,6 +344,7 @@ class WP_Theme_JSON_Gutenberg {
 	 * @since 6.2.0 Added `dimensions.minHeight`, 'shadow.presets', 'shadow.defaultPresets',
 	 *              `position.fixed` and `position.sticky`.
 	 * @since 6.3.0 Removed `layout.definitions`. Added `typography.writingMode`.
+	 * @since 6.4.0 Added `typography.textOrientation`.
 	 * @var array
 	 */
 	const VALID_SETTINGS = array(
@@ -396,19 +399,20 @@ class WP_Theme_JSON_Gutenberg {
 			'defaultPresets' => null,
 		),
 		'typography'                    => array(
-			'fluid'          => null,
-			'customFontSize' => null,
-			'dropCap'        => null,
-			'fontFamilies'   => null,
-			'fontSizes'      => null,
-			'fontStyle'      => null,
-			'fontWeight'     => null,
-			'letterSpacing'  => null,
-			'lineHeight'     => null,
-			'textColumns'    => null,
-			'textDecoration' => null,
-			'textTransform'  => null,
-			'writingMode'    => null,
+			'fluid'           => null,
+			'customFontSize'  => null,
+			'dropCap'         => null,
+			'fontFamilies'    => null,
+			'fontSizes'       => null,
+			'fontStyle'       => null,
+			'fontWeight'      => null,
+			'letterSpacing'   => null,
+			'lineHeight'      => null,
+			'textColumns'     => null,
+			'textDecoration'  => null,
+			'textTransform'   => null,
+			'writingMode'     => null,
+			'textOrientation' => null,
 		),
 		'behaviors'                     => null,
 	);
@@ -462,16 +466,17 @@ class WP_Theme_JSON_Gutenberg {
 			'blockGap' => null,
 		),
 		'typography' => array(
-			'fontFamily'     => null,
-			'fontSize'       => null,
-			'fontStyle'      => null,
-			'fontWeight'     => null,
-			'letterSpacing'  => null,
-			'lineHeight'     => null,
-			'textColumns'    => null,
-			'textDecoration' => null,
-			'textTransform'  => null,
-			'writingMode'    => null,
+			'fontFamily'      => null,
+			'fontSize'        => null,
+			'fontStyle'       => null,
+			'fontWeight'      => null,
+			'letterSpacing'   => null,
+			'lineHeight'      => null,
+			'textColumns'     => null,
+			'textDecoration'  => null,
+			'textTransform'   => null,
+			'writingMode'     => null,
+			'textOrientation' => null,
 		),
 		'css'        => null,
 	);

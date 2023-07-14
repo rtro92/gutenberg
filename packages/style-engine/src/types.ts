@@ -56,6 +56,7 @@ export interface Style {
 		textDecoration?: CSSProperties[ 'textDecoration' ];
 		textTransform?: CSSProperties[ 'textTransform' ];
 		writingMode?: CSSProperties[ 'writingMode' ];
+		textOrientation?: CSSProperties[ 'textOrientation' ];
 	};
 	color?: {
 		text?: CSSProperties[ 'color' ];
