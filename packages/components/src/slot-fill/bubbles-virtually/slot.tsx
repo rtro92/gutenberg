@@ -39,7 +39,7 @@ function Slot(
 
 	const { registerSlot, unregisterSlot, ...registry } =
 		useContext( SlotFillContext );
-	const ref = useRef();
+	const ref = useRef< HTMLElement >( null );
 
 	useLayoutEffect( () => {
 		registerSlot( name, ref, fillProps );
