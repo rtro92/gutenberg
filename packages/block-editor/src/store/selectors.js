@@ -12,7 +12,6 @@ import {
 	getBootstrappedBlockTypes,
 	getBlockVariations,
 	hasBlockSupport,
-	getPossibleBlockTransformations,
 	switchToBlockType,
 	store as blocksStore,
 } from '@wordpress/blocks';
@@ -2068,8 +2067,7 @@ export const getInserterItems = createSelector(
  * @property {number}          frecency     Heuristic that combines frequency and recency.
  */
 export const getBlockTransformItems = createSelector(
-	( state, blocks, rootClientId = null ) => {
-		const normalizedBlocks = Array.isArray( blocks ) ? blocks : [ blocks ];
+	( state, rootClientId = null ) => {
 		const buildBlockTypeTransformItem = buildBlockTypeItem( state, {
 			buildScope: 'transform',
 		} );
@@ -2077,25 +2075,10 @@ export const getBlockTransformItems = createSelector(
 			.filter( ( blockType ) =>
 				canIncludeBlockTypeInInserter( state, blockType, rootClientId )
 			)
-			.map( buildBlockTypeTransformItem );
+			.map( buildBlockTypeTransformItem )
+			.map( ( value ) => [ value.name, value ] );
 
-		const itemsByName = Object.fromEntries(
-			blockTypeTransformItems.map( ( value ) => [ value.name, value ] )
-		);
-
-		const possibleTransforms = getPossibleBlockTransformations(
-			normalizedBlocks
-		).reduce( ( accumulator, block ) => {
-			if ( itemsByName[ block?.name ] ) {
-				accumulator.push( itemsByName[ block.name ] );
-			}
-			return accumulator;
-		}, [] );
-		return orderBy(
-			possibleTransforms,
-			( block ) => block.frecency,
-			'desc'
-		);
+		return Object.fromEntries( blockTypeTransformItems );
 	},
 	( state, blocks, rootClientId ) => [
 		state.blockListSettings[ rootClientId ],
@@ -2279,7 +2262,7 @@ const checkAllowListRecursive = ( blocks, allowedBlockTypes ) => {
 	return true;
 };
 
-function getUnsyncedPatterns( state ) {
+export function getUnsyncedPatterns( state ) {
 	const reusableBlocks =
 		state?.settings?.__experimentalReusableBlocks ?? EMPTY_ARRAY;
 
