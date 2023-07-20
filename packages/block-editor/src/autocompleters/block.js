@@ -116,7 +116,7 @@ function createBlockCompleter() {
 		allowContext( before, after ) {
 			return ! ( /\S/.test( before ) || /\S/.test( after ) );
 		},
-		getOptionCompletion( inserterItem ) {
+		async getOptionCompletion( inserterItem ) {
 			const {
 				name,
 				initialAttributes,
@@ -124,18 +124,17 @@ function createBlockCompleter() {
 				syncStatus,
 				content,
 			} = inserterItem;
-
 			return {
 				action: 'replace',
 				value:
 					syncStatus === 'unsynced'
-						? parse( content, {
+						? await parse( content, {
 								__unstableSkipMigrationLogs: true,
 						  } )
-						: createBlock(
+						: await createBlock(
 								name,
 								initialAttributes,
-								createBlocksFromInnerBlocksTemplate(
+								await createBlocksFromInnerBlocksTemplate(
 									innerBlocks
 								)
 						  ),
