@@ -15,7 +15,8 @@ import {
 } from '@wordpress/blocks';
 import { createHigherOrderComponent, useInstanceId } from '@wordpress/compose';
 import { addFilter } from '@wordpress/hooks';
-import { useMemo, useContext, createPortal } from '@wordpress/element';
+import { useMemo, useEffect } from '@wordpress/element';
+import { useSelect, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -26,44 +27,21 @@ import {
 	__experimentalDuotoneControl as DuotoneControl,
 	useSetting,
 } from '../components';
-import BlockList from '../components/block-list';
 import {
-	__unstableDuotoneFilter as DuotoneFilter,
-	__unstableDuotoneStylesheet as DuotoneStylesheet,
-	__unstableDuotoneUnsetStylesheet as DuotoneUnsetStylesheet,
-} from '../components/duotone';
+	getDuotoneFilter,
+	getDuotoneStylesheet,
+	getDuotoneUnsetStylesheet,
+} from '../components/duotone/utils';
 import { getBlockCSSSelector } from '../components/global-styles/get-block-css-selector';
 import { scopeSelector } from '../components/global-styles/utils';
 import { useBlockSettings } from './utils';
 import { default as StylesFiltersPanel } from '../components/global-styles/filters-panel';
 import { useBlockEditingMode } from '../components/block-editing-mode';
+import { store as blockEditorStore } from '../store';
 
 const EMPTY_ARRAY = [];
 
 extend( [ namesPlugin ] );
-
-/**
- * SVG and stylesheet needed for rendering the duotone filter.
- *
- * @param {Object}           props          Duotone props.
- * @param {string}           props.selector Selector to apply the filter to.
- * @param {string}           props.id       Unique id for this duotone filter.
- * @param {string[]|"unset"} props.colors   Array of RGB color strings ordered from dark to light.
- *
- * @return {WPElement} Duotone element.
- */
-function InlineDuotone( { selector, id, colors } ) {
-	if ( colors === 'unset' ) {
-		return <DuotoneUnsetStylesheet selector={ selector } />;
-	}
-
-	return (
-		<>
-			<DuotoneFilter id={ id } colors={ colors } />
-			<DuotoneStylesheet id={ id } selector={ selector } />
-		</>
-	);
-}
 
 function useMultiOriginPresets( { presetSetting, defaultSetting } ) {
 	const disableDefault = ! useSetting( defaultSetting );
@@ -243,12 +221,26 @@ const withDuotoneControls = createHigherOrderComponent(
 	'withDuotoneControls'
 );
 
+function addStyle( styles, style ) {
+	let i = styles.length;
+	while ( i-- ) {
+		if ( styles[ i ].id === style.id ) {
+			styles[ i ] = style;
+			return styles;
+		}
+	}
+
+	styles.push( style );
+	return styles;
+}
+
 function DuotoneStyles( {
 	id: filterId,
 	selector: duotoneSelector,
 	attribute: duotoneAttr,
 } ) {
-	const element = useContext( BlockList.__unstableElementContext );
+	const { getSettings } = useSelect( blockEditorStore );
+	const { updateSettings } = useDispatch( blockEditorStore );
 
 	const duotonePalette = useMultiOriginPresets( {
 		presetSetting: 'color.duotone',
@@ -290,25 +282,46 @@ function DuotoneStyles( {
 		// Assuming the selector part is a subclass selector (not a tag name)
 		// so we can prepend the filter id class. If we want to support elements
 		// such as `img` or namespaces, we'll need to add a case for that here.
-		return `.editor-styles-wrapper .${ filterId }${ selectorPart.trim() }`;
+		return `.${ filterId }${ selectorPart.trim() }`;
 	} );
 
 	const selector = selectorsScoped.join( ', ' );
 
 	const isValidFilter = Array.isArray( colors ) || colors === 'unset';
 
-	return (
-		element &&
-		isValidFilter &&
-		createPortal(
-			<InlineDuotone
-				selector={ selector }
-				id={ filterId }
-				colors={ colors }
-			/>,
-			element
-		)
-	);
+	useEffect( () => {
+		const settings = getSettings();
+		const styles = [ ...settings.styles ];
+
+		addStyle( styles, {
+			id: filterId,
+			css:
+				colors !== 'unset'
+					? getDuotoneStylesheet( selector, filterId )
+					: getDuotoneUnsetStylesheet( selector ),
+			__unstableType: 'presets',
+		} );
+		addStyle( styles, {
+			id: `duotone-${ filterId }`,
+			assets:
+				colors !== 'unset' ? getDuotoneFilter( filterId, colors ) : '',
+			__unstableType: 'svgs',
+		} );
+
+		updateSettings( {
+			...settings,
+			styles,
+		} );
+	}, [
+		getSettings,
+		updateSettings,
+		isValidFilter,
+		selector,
+		filterId,
+		colors,
+	] );
+
+	return null;
 }
 
 /**

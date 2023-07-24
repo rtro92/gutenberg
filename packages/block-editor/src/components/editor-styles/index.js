@@ -10,11 +10,13 @@ import a11yPlugin from 'colord/plugins/a11y';
  */
 import { SVG } from '@wordpress/components';
 import { useCallback, useMemo } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import transformStyles from '../../utils/transform-styles';
+import { store as blockEditorStore } from '../../store';
 
 const EDITOR_STYLES_SELECTOR = '.editor-styles-wrapper';
 extend( [ namesPlugin, a11yPlugin ] );
@@ -68,9 +70,16 @@ function useDarkThemeBodyClassName( styles ) {
 }
 
 export default function EditorStyles( { styles } ) {
+	const settings = useSelect(
+		( select ) => select( blockEditorStore ).getSettings().styles,
+		[]
+	);
 	const stylesArray = useMemo(
-		() => Object.values( styles ?? [] ),
-		[ styles ]
+		() => [
+			...Object.values( settings ?? [] ),
+			...Object.values( styles ?? [] ),
+		],
+		[ styles, settings ]
 	);
 	const transformedStyles = useMemo(
 		() =>

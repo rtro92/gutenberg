@@ -101,7 +101,7 @@ function getPostContentAttributes( blocks ) {
 	}
 }
 
-export default function VisualEditor( { styles } ) {
+export default function VisualEditor() {
 	const {
 		deviceType,
 		isWelcomeGuideVisible,
@@ -313,9 +313,8 @@ export default function VisualEditor( { styles } ) {
 		titleRef?.current?.focus();
 	}, [ isWelcomeGuideVisible, isCleanNewPost ] );
 
-	styles = useMemo(
+	const styles = useMemo(
 		() => [
-			...styles,
 			{
 				// We should move this in to future to the body.
 				css:
@@ -325,7 +324,7 @@ export default function VisualEditor( { styles } ) {
 						: '' ),
 			},
 		],
-		[ styles ]
+		[ paddingBottom ]
 	);
 
 	// Add some styles for alignwide/alignfull Post Content and its children.
