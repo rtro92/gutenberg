@@ -224,10 +224,14 @@ export function usePasteHandler( props ) {
 				mode = 'BLOCKS';
 			}
 
+			const trimmedPlainText = plainText.trim();
+
 			if (
 				__unstableEmbedURLOnPaste &&
 				isEmpty( value ) &&
-				isURL( plainText.trim() )
+				isURL( trimmedPlainText ) &&
+				// For the link pasting feature, allow only http(s) protocols.
+				/^https?:/.test( trimmedPlainText )
 			) {
 				mode = 'BLOCKS';
 			}
