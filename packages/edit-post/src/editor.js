@@ -40,7 +40,7 @@ function Editor( { postId, postType, settings, initialEdits, ...props } ) {
 		post,
 		preferredStyleVariations,
 		hiddenBlockTypes,
-		blockNames,
+		blockTypes,
 		keepCaretInsideBlock,
 		isTemplateMode,
 		template,
@@ -55,7 +55,7 @@ function Editor( { postId, postType, settings, initialEdits, ...props } ) {
 			const { getEntityRecord, getPostType, getEntityRecords, canUser } =
 				select( coreStore );
 			const { getEditorSettings } = select( editorStore );
-			const { getBlockNames } = select( blocksStore );
+			const { getBootstrappedBlockTypes } = select( blocksStore );
 			const isTemplate = [ 'wp_template', 'wp_template_part' ].includes(
 				postType
 			);
@@ -85,7 +85,7 @@ function Editor( { postId, postType, settings, initialEdits, ...props } ) {
 					'preferredStyleVariations'
 				),
 				hiddenBlockTypes: getHiddenBlockTypes(),
-				blockNames: getBlockNames(),
+				blockTypes: getBootstrappedBlockTypes(),
 				keepCaretInsideBlock: isFeatureActive( 'keepCaretInsideBlock' ),
 				isTemplateMode: isEditingTemplate(),
 				template:
@@ -128,7 +128,7 @@ function Editor( { postId, postType, settings, initialEdits, ...props } ) {
 			// all block types).
 			const defaultAllowedBlockTypes =
 				true === settings.allowedBlockTypes
-					? blockNames
+					? blockTypes.map( ( { name } ) => name )
 					: settings.allowedBlockTypes || [];
 
 			result.allowedBlockTypes = defaultAllowedBlockTypes.filter(
@@ -144,7 +144,7 @@ function Editor( { postId, postType, settings, initialEdits, ...props } ) {
 		focusMode,
 		isDistractionFree,
 		hiddenBlockTypes,
-		blockNames,
+		blockTypes,
 		preferredStyleVariations,
 		setIsInserterOpened,
 		updatePreferredStyleVariations,
