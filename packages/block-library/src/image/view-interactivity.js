@@ -40,12 +40,6 @@ store( {
 							event
 						);
 					}
-					// Hide overflow only when the animation is in progress,
-					// otherwise the removal of the scrollbars will draw attention
-					// to itself and look like an error
-					document.documentElement.classList.add(
-						'has-lightbox-open'
-					);
 
 					// Since the img is hidden and its src not loaded until
 					// the lightbox is opened, let's create an img element on the fly
@@ -95,10 +89,6 @@ store( {
 								window.onscroll = function () {};
 							}, 400 );
 						}
-
-						document.documentElement.classList.remove(
-							'has-lightbox-open'
-						);
 
 						context.core.image.lightboxEnabled = false;
 						context.core.image.lastFocusedElement.focus();
