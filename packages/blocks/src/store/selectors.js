@@ -321,11 +321,7 @@ export function getActiveBlockVariation( state, blockName, attributes, scope ) {
 export function getDefaultBlockVariation( state, blockName, scope ) {
 	const variations = getBlockVariations( state, blockName, scope );
 
-	const defaultVariation = [ ...variations ]
-		.reverse()
-		.find( ( { isDefault } ) => !! isDefault );
-
-	return defaultVariation || variations[ 0 ];
+	return variations.findLast( ( v, i ) => v.isDefault || i === 0 );
 }
 
 /**
