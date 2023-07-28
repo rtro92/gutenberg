@@ -28,7 +28,7 @@ import InserterDraggableBlocks from '../inserter-draggable-blocks';
 function InserterListItem( {
 	className,
 	isFirst,
-	item: { name },
+	item: { name, isDisabled },
 	onSelect,
 	onHover,
 	isDraggable,
@@ -73,7 +73,7 @@ function InserterListItem( {
 
 	return (
 		<InserterDraggableBlocks
-			isEnabled={ isDraggable && ! item.disabled }
+			isEnabled={ isDraggable }
 			blocks={ blocks }
 			icon={ item.icon }
 		>
@@ -107,7 +107,7 @@ function InserterListItem( {
 							'block-editor-block-types-list__item',
 							className
 						) }
-						disabled={ item.isDisabled }
+						disabled={ isDisabled }
 						onClick={ ( event ) => {
 							event.preventDefault();
 							onSelect(
