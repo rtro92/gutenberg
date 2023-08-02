@@ -32,7 +32,7 @@ function Slot(
 	const {
 		name,
 		fillProps = {},
-		as: Component = 'div',
+		as,
 		// `children` is not allowed. However, if it is passed,
 		// it will be displayed as is, so remove `children`.
 		// @ts-ignore
@@ -63,7 +63,7 @@ function Slot(
 
 	return (
 		<View
-			as={ Component }
+			as={ as }
 			ref={ useMergeRefs( [ forwardedRef, ref ] ) }
 			{ ...restProps }
 		/>
