@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Internal
+-   `SlotFill`: Refactor `<Slot bubblesVirtually />` ([#53272](https://github.com/WordPress/gutenberg/pull/53272))
+
+
 ### New Feature
 
 -   Add a new `ProgressBar` component. ([#53030](https://github.com/WordPress/gutenberg/pull/53030)).
