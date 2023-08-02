@@ -29,13 +29,16 @@ function Slot(
 	>,
 	forwardedRef: ForwardedRef< any >
 ) {
-	const { name, fillProps = {}, as: Component = 'div', ...restProps } = props;
-
-	// `children` is not allowed. However, if it is passed,
-	// it will be displayed as is, so remove `children`.
-	if ( 'children' in restProps ) {
-		delete restProps.children;
-	}
+	const {
+		name,
+		fillProps = {},
+		as: Component = 'div',
+		// `children` is not allowed. However, if it is passed,
+		// it will be displayed as is, so remove `children`.
+		// @ts-ignore
+		children,
+		...restProps
+	} = props;
 
 	const { registerSlot, unregisterSlot, ...registry } =
 		useContext( SlotFillContext );
