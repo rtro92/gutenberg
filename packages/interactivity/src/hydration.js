@@ -8,6 +8,7 @@ import { hydrate } from 'preact';
 import { toVdom, hydratedIslands } from './vdom';
 import { createRootFragment } from './utils';
 import { directivePrefix } from './constants';
+import { rawStore as store } from './store';
 
 export const init = async () => {
 	document
@@ -19,4 +20,5 @@ export const init = async () => {
 				hydrate( vdom, fragment );
 			}
 		} );
+	store.afterLoad.forEach( ( { callback } ) => callback( store ) );
 };
