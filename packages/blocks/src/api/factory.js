@@ -154,6 +154,11 @@ export function cloneBlock( block, mergeAttributes = {}, newInnerBlocks ) {
  * @return {boolean} Is the transform possible?
  */
 const isPossibleTransformForSource = ( transform, direction, blocks ) => {
+	// Only consider 'block' type transforms as valid.
+	if ( transform.type !== 'block' ) {
+		return false;
+	}
+
 	if ( ! blocks.length ) {
 		return false;
 	}
@@ -161,38 +166,29 @@ const isPossibleTransformForSource = ( transform, direction, blocks ) => {
 	// If multiple blocks are selected, only multi block transforms
 	// or wildcard transforms are allowed.
 	const isMultiBlock = blocks.length > 1;
-	const firstBlockName = blocks[ 0 ].name;
-	const isValidForMultiBlocks =
-		isWildcardBlockTransform( transform ) ||
-		! isMultiBlock ||
-		transform.isMultiBlock;
-	if ( ! isValidForMultiBlocks ) {
+	const isWildcardTransform = isWildcardBlockTransform( transform );
+	if ( isMultiBlock && ! isWildcardTransform && ! transform.isMultiBlock ) {
 		return false;
 	}
 
 	// Check non-wildcard transforms to ensure that transform is valid
 	// for a block selection of multiple blocks of different types.
+	const firstBlockName = blocks[ 0 ].name;
 	if (
-		! isWildcardBlockTransform( transform ) &&
+		! isWildcardTransform &&
 		! blocks.every( ( block ) => block.name === firstBlockName )
 	) {
-		return false;
-	}
-
-	// Only consider 'block' type transforms as valid.
-	const isBlockType = transform.type === 'block';
-	if ( ! isBlockType ) {
 		return false;
 	}
 
 	// Check if the transform's block name matches the source block (or is a wildcard)
 	// only if this is a transform 'from'.
 	const sourceBlock = blocks[ 0 ];
-	const hasMatchingName =
-		direction !== 'from' ||
-		transform.blocks.indexOf( sourceBlock.name ) !== -1 ||
-		isWildcardBlockTransform( transform );
-	if ( ! hasMatchingName ) {
+	if (
+		direction === 'from' &&
+		! isWildcardTransform &&
+		! transform.blocks.includes( sourceBlock.name )
+	) {
 		return false;
 	}
 
