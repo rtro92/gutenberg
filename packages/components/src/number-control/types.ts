@@ -58,29 +58,28 @@ export type NumberControlProps = Omit<
 	 */
 	required?: InputControlProps[ 'required' ];
 	/**
-	 * Amount to increment by when the `SHIFT` key is held down. This shift value is
-	 * a multiplier to the `step` value. For example, if the `step` value is `5`,
-	 * and `shiftStep` is `10`, each jump would increment/decrement by `50`.
+	 * Optional multiplication factor in spin changes when the `SHIFT` key is held down.
+	 * For example, with a `spinFactor` of `5`, and a `shiftStep` of `10`, each spin
+	 * changes by `50 * step` (if `step` is "any", 1 is used instead).
 	 *
 	 * @default 10
 	 */
 	shiftStep?: number;
 	/**
-	 * Amount by which the `value` is changed when incrementing/decrementing.
-	 * It is also a factor in validation as `value` must be a multiple of `step`
-	 * (offset by `min`, if specified) to be valid. Accepts the special string value `any`
-	 * that voids the validation constraint and causes stepping actions to increment/decrement by `1`.
+	 * A validation constraint specifying that `value` must be a multiple of `step`
+	 * (offset by `min`, if specified). Accepts the special string value `any`
+	 * that voids the validation constraint.
 	 *
 	 * @default 1
 	 */
 	step?: InputControlProps[ 'step' ];
 	/**
-	 * Optional alternative amount by which the `value` is rounded by when incrementing/decrementing
-	 * using the spin controls. e.g. a step value of 0.1 and a spincrement value of 0.01.
+	 * Optional multiplication factor in spin changes. I.e. a spin changes
+	 * by `spinFactor * step` (if `step` is "any", 1 is used instead).
 	 *
-	 * @default 'number'
+	 * @default 1
 	 */
-	spincrement?: InputControlProps[ 'step' ];
+	spinFactor?: number;
 	/**
 	 * The `type` attribute of the `input` element.
 	 *
