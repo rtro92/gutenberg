@@ -8,6 +8,7 @@ import {
 	store as blockEditorStore,
 	useBlockProps,
 } from '@wordpress/block-editor';
+import { store as coreStore } from '@wordpress/core-data';
 
 const PatternEdit = ( { attributes, clientId } ) => {
 	const selectedPattern = useSelect(
@@ -18,8 +19,22 @@ const PatternEdit = ( { attributes, clientId } ) => {
 		[ attributes.slug ]
 	);
 
+	const currentThemeStylesheet = useSelect(
+		( select ) => select( coreStore ).getCurrentTheme().stylesheet
+	);
+
 	const { replaceBlocks, __unstableMarkNextChangeAsNotPersistent } =
 		useDispatch( blockEditorStore );
+
+	function injectThemeAttributeInBlockTemplateContent( block ) {
+		if (
+			block.name === 'core/template-part' &&
+			block.attributes.theme === undefined
+		) {
+			block.attributes.theme = currentThemeStylesheet;
+		}
+		return block;
+	}
 
 	// Run this effect when the component loads.
 	// This adds the Pattern's contents to the post.
@@ -36,7 +51,9 @@ const PatternEdit = ( { attributes, clientId } ) => {
 				// Clone blocks from the pattern before insertion to ensure they receive
 				// distinct client ids. See https://github.com/WordPress/gutenberg/issues/50628.
 				const clonedBlocks = selectedPattern.blocks.map( ( block ) =>
-					cloneBlock( block )
+					cloneBlock(
+						injectThemeAttributeInBlockTemplateContent( block )
+					)
 				);
 				__unstableMarkNextChangeAsNotPersistent();
 				replaceBlocks( clientId, clonedBlocks );
