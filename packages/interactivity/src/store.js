@@ -37,17 +37,8 @@ const getSerializedState = () => {
 
 const rawState = getSerializedState();
 export const rawStore = { state: deepSignal( rawState ) };
-const rawCallbacks = { afterLoad: [] };
 
-export const store = ( { state, ...block }, callbacks = null ) => {
+export const store = ( { state, ...block } ) => {
 	deepMerge( rawStore, block );
 	deepMerge( rawState, state );
-	if ( callbacks ) {
-		const {
-			afterLoad: { callback, priority = 0 },
-		} = callbacks;
-		rawCallbacks.afterLoad.push( { callback, priority } );
-		rawCallbacks.afterLoad.sort( ( a, b ) => a.priority - b.priority );
-	}
-	deepMerge( rawStore, rawCallbacks );
 };
