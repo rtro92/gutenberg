@@ -9,7 +9,7 @@
 /**
  * Base Global Styles REST API Controller.
  */
-class Gutenberg_REST_Global_Styles_Controller_6_3 extends Gutenberg_REST_Global_Styles_Controller_6_2 {
+class Gutenberg_REST_Global_Styles_Controller_6_3 extends WP_REST_Global_Styles_Controller {
 	/**
 	 * Prepares links for the request.
 	 *
