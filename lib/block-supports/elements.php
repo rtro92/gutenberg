@@ -6,16 +6,6 @@
  */
 
 /**
- * Get the elements class names.
- *
- * @param array $block Block object.
- * @return string      The unique class name.
- */
-function gutenberg_get_elements_class_name( $block ) {
-	return 'wp-elements-' . md5( serialize( $block ) );
-}
-
-/**
  * Update the block content with elements class names.
  *
  * @param  string $block_content Rendered block content.
@@ -58,7 +48,7 @@ function gutenberg_render_elements_support( $block_content, $block ) {
 	// Add the class name to the first element, presuming it's the wrapper, if it exists.
 	$tags = new WP_HTML_Tag_Processor( $block_content );
 	if ( $tags->next_tag() ) {
-		$tags->add_class( gutenberg_get_elements_class_name( $block ) );
+		$tags->add_class( wp_get_elements_class_name( $block ) );
 	}
 
 	return $tags->get_updated_html();
@@ -88,7 +78,7 @@ function gutenberg_render_elements_support_styles( $pre_render, $block ) {
 	if ( $skip_link_color_serialization ) {
 		return null;
 	}
-	$class_name        = gutenberg_get_elements_class_name( $block );
+	$class_name        = wp_get_elements_class_name( $block );
 	$link_block_styles = isset( $element_block_styles['link'] ) ? $element_block_styles['link'] : null;
 
 	gutenberg_style_engine_get_styles(
