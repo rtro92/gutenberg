@@ -7,7 +7,6 @@ import createSelector from 'rememo';
  * WordPress dependencies
  */
 import {
-	store as blocksStore,
 	getBlockType,
 	getBootstrappedBlockTypes,
 	getBlockVariations,
@@ -15,7 +14,6 @@ import {
 	switchToBlockType,
 	store as blocksStore,
 } from '@wordpress/blocks';
-import { createRegistrySelector } from '@wordpress/data';
 import { Platform } from '@wordpress/element';
 import { applyFilters } from '@wordpress/hooks';
 import { symbol } from '@wordpress/icons';
