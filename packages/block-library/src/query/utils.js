@@ -11,7 +11,7 @@ import { cloneBlock, store as blocksStore } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import { name as queryLoopName } from './block.json';
+import metadata from './block.json';
 
 /** @typedef {import('@wordpress/blocks').WPBlockVariation} WPBlockVariation */
 
@@ -175,7 +175,7 @@ export function useAllowedControls( attributes ) {
 	return useSelect(
 		( select ) =>
 			select( blocksStore ).getActiveBlockVariation(
-				queryLoopName,
+				metadata.name,
 				attributes
 			)?.allowedControls,
 
@@ -249,12 +249,12 @@ export function useBlockNameForPatterns( clientId, attributes ) {
 	const activeVariationName = useSelect(
 		( select ) =>
 			select( blocksStore ).getActiveBlockVariation(
-				queryLoopName,
+				metadata.name,
 				attributes
 			)?.name,
 		[ attributes ]
 	);
-	const blockName = `${ queryLoopName }/${ activeVariationName }`;
+	const blockName = `${ metadata.name }/${ activeVariationName }`;
 	const activeVariationPatterns = useSelect(
 		( select ) => {
 			if ( ! activeVariationName ) {
@@ -267,7 +267,7 @@ export function useBlockNameForPatterns( clientId, attributes ) {
 		},
 		[ clientId, activeVariationName ]
 	);
-	return activeVariationPatterns?.length ? blockName : queryLoopName;
+	return activeVariationPatterns?.length ? blockName : metadata.name;
 }
 
 /**
@@ -300,10 +300,10 @@ export function useScopedBlockVariations( attributes ) {
 				select( blocksStore );
 			return {
 				activeVariationName: getActiveBlockVariation(
-					queryLoopName,
+					metadata.name,
 					attributes
 				)?.name,
-				blockVariations: getBlockVariations( queryLoopName, 'block' ),
+				blockVariations: getBlockVariations( metadata.name, 'block' ),
 			};
 		},
 		[ attributes ]

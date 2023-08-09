@@ -6,7 +6,7 @@ import { createBlock, getBlockAttributes } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import { name } from './block.json';
+import metadata from './block.json';
 
 const transforms = {
 	from: [
@@ -22,7 +22,10 @@ const transforms = {
 				},
 			} ),
 			transform( node ) {
-				const attributes = getBlockAttributes( name, node.outerHTML );
+				const attributes = getBlockAttributes(
+					metadata.name,
+					node.outerHTML
+				);
 				const { textAlign } = node.style || {};
 
 				if (
@@ -33,7 +36,7 @@ const transforms = {
 					attributes.align = textAlign;
 				}
 
-				return createBlock( name, attributes );
+				return createBlock( metadata.name, attributes );
 			},
 		},
 	],

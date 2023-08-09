@@ -215,6 +215,7 @@ if ( files.length ) {
 		[
 			`${ PACKAGES_DIR }/*/src/**/*.{js,ts,tsx}`,
 			`${ PACKAGES_DIR }/*/src/*.scss`,
+			`${ PACKAGES_DIR }/*/src/**/*.json`,
 			`${ PACKAGES_DIR }/block-library/src/**/*.js`,
 			`${ PACKAGES_DIR }/block-library/src/*/style.scss`,
 			`${ PACKAGES_DIR }/block-library/src/*/theme.scss`,
@@ -224,7 +225,7 @@ if ( files.length ) {
 		{
 			ignore: [
 				`**/benchmark/**`,
-				`**/{__mocks__,__tests__,test}/**`,
+				`**/{__mocks__,__tests__,__fixtures__,test}/**`,
 				`**/{storybook,stories}/**`,
 				`**/e2e-test-utils-playwright/**`,
 			],

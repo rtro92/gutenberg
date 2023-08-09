@@ -9,7 +9,7 @@ import { cloneBlock } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import { name as listItemName } from '../block.json';
+import metadata from '../block.json';
 
 export default function useOutdentListItem( clientId ) {
 	const registry = useRegistry();
@@ -21,7 +21,7 @@ export default function useOutdentListItem( clientId ) {
 				getBlockRootClientId( clientId )
 			);
 			const grandParentName = getBlockName( grandParentId );
-			const isListItem = grandParentName === listItemName;
+			const isListItem = grandParentName === metadata.name;
 
 			return {
 				canOutdent: isListItem,
@@ -49,7 +49,7 @@ export default function useOutdentListItem( clientId ) {
 		const listId = getBlockRootClientId( id );
 		const parentListItemId = getBlockRootClientId( listId );
 		if ( ! parentListItemId ) return;
-		if ( getBlockName( parentListItemId ) !== listItemName ) return;
+		if ( getBlockName( parentListItemId ) !== metadata.name ) return;
 		return parentListItemId;
 	}
 
@@ -65,7 +65,7 @@ export default function useOutdentListItem( clientId ) {
 			const firstClientId = clientIds[ 0 ];
 
 			// Can't outdent if it's not a list item.
-			if ( getBlockName( firstClientId ) !== listItemName ) return;
+			if ( getBlockName( firstClientId ) !== metadata.name ) return;
 
 			const parentListItemId = getParentListItemId( firstClientId );
 

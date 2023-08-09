@@ -6,25 +6,25 @@ import { createBlock, switchToBlockType } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import { name as listItemName } from './block.json';
-import { name as listName } from '../list/block.json';
-import { name as paragraphName } from '../paragraph/block.json';
+import listItemBlock from './block.json';
+import listBlock from '../list/block.json';
+import paragraphBlock from '../paragraph/block.json';
 
 export function createListItem( listItemAttributes, listAttributes, children ) {
 	return createBlock(
-		listItemName,
+		listItemBlock.name,
 		listItemAttributes,
 		! children?.length
 			? []
-			: [ createBlock( listName, listAttributes, children ) ]
+			: [ createBlock( listItemBlock.name, listAttributes, children ) ]
 	);
 }
 
 function convertBlockToList( block ) {
-	const list = switchToBlockType( block, listName );
+	const list = switchToBlockType( block, listBlock.name );
 	if ( list ) return list;
-	const paragraph = switchToBlockType( block, paragraphName );
-	if ( paragraph ) return switchToBlockType( paragraph, listName );
+	const paragraph = switchToBlockType( block, paragraphBlock.name );
+	if ( paragraph ) return switchToBlockType( paragraph, listBlock.name );
 	return null;
 }
 
@@ -32,9 +32,9 @@ export function convertToListItems( blocks ) {
 	const listItems = [];
 
 	for ( let block of blocks ) {
-		if ( block.name === listItemName ) {
+		if ( block.name === listItemBlock.name ) {
 			listItems.push( block );
-		} else if ( block.name === listName ) {
+		} else if ( block.name === listBlock.name ) {
 			listItems.push( ...block.innerBlocks );
 		} else if ( ( block = convertBlockToList( block ) ) ) {
 			for ( const { innerBlocks } of block ) {

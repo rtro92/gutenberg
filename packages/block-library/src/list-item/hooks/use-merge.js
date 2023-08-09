@@ -9,7 +9,7 @@ import { store as blockEditorStore } from '@wordpress/block-editor';
  */
 import useOutdentListItem from './use-outdent-list-item';
 
-import { name as listItemName } from '../block.json';
+import metadata from '../block.json';
 
 export default function useMerge( clientId, onMerge ) {
 	const registry = useRegistry();
@@ -38,7 +38,7 @@ export default function useMerge( clientId, onMerge ) {
 		const listId = getBlockRootClientId( id );
 		const parentListItemId = getBlockRootClientId( listId );
 		if ( ! parentListItemId ) return;
-		if ( getBlockName( parentListItemId ) !== listItemName ) return;
+		if ( getBlockName( parentListItemId ) !== metadata.name ) return;
 		return parentListItemId;
 	}
 

@@ -20,7 +20,7 @@ import { createBlock, store as blocksStore } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import { name } from './block.json';
+import metadata from './block.json';
 import { unlock } from '../lock-unlock';
 
 const { usesContextKey } = unlock( privateApis );
@@ -54,7 +54,7 @@ export const format = {
 			getBlockParentsByBlockName,
 		} = useSelect( blockEditorStore );
 		const footnotesBlockType = useSelect( ( select ) =>
-			select( blocksStore ).getBlockType( name )
+			select( blocksStore ).getBlockType( metadata.name )
 		);
 		/*
 		 * This useSelect exists because we need to use its return value
@@ -135,7 +135,7 @@ export const format = {
 					const queue = [ ...blocks ];
 					while ( queue.length ) {
 						const block = queue.shift();
-						if ( block.name === name ) {
+						if ( block.name === metadata.name ) {
 							fnBlock = block;
 							break;
 						}
@@ -156,7 +156,7 @@ export const format = {
 						rootClientId = getBlockRootClientId( rootClientId );
 					}
 
-					fnBlock = createBlock( name );
+					fnBlock = createBlock( metadata.name );
 
 					insertBlock( fnBlock, undefined, rootClientId );
 				}

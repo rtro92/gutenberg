@@ -7,7 +7,7 @@ import { __unstableCreateElement as createElement } from '@wordpress/rich-text';
 /**
  * Internal dependencies
  */
-import { name } from './block.json';
+import metadata from './block.json';
 
 const transforms = {
 	from: [
@@ -18,7 +18,7 @@ const transforms = {
 			transform: ( buttons ) =>
 				// Creates the buttons block.
 				createBlock(
-					name,
+					metadata.name,
 					{},
 					// Loop the selected buttons.
 					buttons.map( ( attributes ) =>
@@ -34,7 +34,7 @@ const transforms = {
 			transform: ( buttons ) =>
 				// Creates the buttons block.
 				createBlock(
-					name,
+					metadata.name,
 					{},
 					// Loop the selected buttons.
 					buttons.map( ( attributes ) => {
