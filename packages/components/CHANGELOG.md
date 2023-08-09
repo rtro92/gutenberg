@@ -5,6 +5,7 @@
 ### Enhancements
 
 -   `ColorPalette`, `BorderControl`: Don't hyphenate hex value in `aria-label` ([#52932](https://github.com/WordPress/gutenberg/pull/52932)).
+-   `Snackbar`: Make smaller and speed up interactions ([#53248](https://github.com/WordPress/gutenberg/pull/53248))
 
 ### Bug Fix
 
