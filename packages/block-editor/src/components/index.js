@@ -159,6 +159,7 @@ export {
 export { default as __experimentalBlockPatternsList } from './block-patterns-list';
 export { default as __experimentalPublishDateTimePicker } from './publish-date-time-picker';
 export { default as __experimentalInspectorPopoverHeader } from './inspector-popover-header';
+export { useBlockEditingMode } from './block-editing-mode';
 
 /*
  * State Related Components
@@ -166,8 +167,3 @@ export { default as __experimentalInspectorPopoverHeader } from './inspector-pop
 
 export { default as BlockEditorProvider } from './provider';
 export { default as useSetting } from './use-setting';
-
-/*
- * The following rename hint component can be removed in 6.4.
- */
-export { default as ReusableBlocksRenameHint } from './inserter/reusable-block-rename-hint';
